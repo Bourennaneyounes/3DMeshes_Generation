@@ -182,3 +182,27 @@ The project pipeline is divided into two main stages:
    blenderproc debug update_uv_all.py
    ```
 
+Certainly! Here’s the revised Step 2 for the Simulation and Dataset Creation section:
+
+---
+
+## Simulation and Dataset Creation
+
+### Step 1: Setting Up BlenderProc Renderer
+
+1. **Replace Renderer Files**:
+   - In shapo (fruit edition repo) Replace the existing files in the `BlenderProc/blenderproc/renderer` directory with the files from your `renderer` folder. This ensures you have the updated configuration for fruit simulation.
+
+
+
+### Step 2: Update Simulation Scripts
+
+1. **Copy New Scripts**:
+   - Place the new scripts, `create_images_without_background.py` and `create_images_with_background.py`, into the `shapo (fruit edition repo)` 
+
+
+2. **Modify `create_scene.py`**:
+   - Update `create_scene.py` to use the new scripts. Open `create_scene.py` and ensure it references `create_images_without_background.py` and `create_images_with_background.py` as needed. This might involve modifying import statements or function calls to integrate the new scripts.
+
+
+
