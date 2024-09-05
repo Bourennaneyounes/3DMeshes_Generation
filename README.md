@@ -77,12 +77,18 @@ The project pipeline is divided into two main stages:
 3. **Copy Required Scripts**:
    - Before running `select_poly_all.py`, copy `select_poly_all.py`, `update_uv_all.py`, and `update_json.py` to the `BlenderProc/blenderproc/scripts` directory.
 
-4. **Change Directory to BlenderProc Scripts**:
+4. **Create Output Directories**:
+   - Create the necessary output directories:
+     ```bash
+     mkdir -p BlenderProc/blenderproc/scripts/output BlenderProc/blenderproc/scripts/output_json_updated
+     ```
+
+5. **Change Directory to BlenderProc Scripts**:
    ```bash
    cd blenderproc/scripts
    ```
 
-5. **Run `select_poly_all.py`**:
+6. **Run `select_poly_all.py`**:
    - Update `mesh_dir` to point to the folder with your 3D models and set `destination_folder` to your desired output folder (e.g., `/your_home_path/BlenderProc/blenderproc/scripts/output`).
    ```bash
    blenderproc debug select_poly_all.py
@@ -135,9 +141,7 @@ The project pipeline is divided into two main stages:
      ```bash
      python single_image_test_script.py
      ```
-   - The inpainted textures will be saved in the `output` folder inside the `ZITS
-
-Inpainting directory.
+   - The inpainted textures will be saved in the `output` folder inside the `ZITS_inpainting` directory.
 
 5. **Troubleshooting**:
    - If you encounter installation issues with ZITS, refer to their [GitHub page](https://github.com/DQiaole/ZITS_inpainting) for assistance.
