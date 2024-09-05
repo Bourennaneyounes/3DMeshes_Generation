@@ -63,20 +63,29 @@ The project pipeline is divided into two main stages:
 
 ### Step 3: Installing and Using BlenderProc
 
-1. **Install BlenderProc**:
+1. **Clone the BlenderProc Repository**:
    ```bash
-   pip install blenderproc
+   git clone https://github.com/DLR-RM/BlenderProc
+   cd BlenderProc
    ```
 
-2. **Change Directory to BlenderProc Scripts**:
+2. **Install BlenderProc**:
    ```bash
-   cd BlenderProc/blenderproc/scripts
+   pip install -e .
    ```
 
-3. **Run `select_poly_all.py`**:
-   - Update `mesh_dir` to point to the folder with your 3D models and set `destination_folder` to your desired output folder (e.g., `your_home_path/BlenderProc/blenderproc/scripts/output`).
+3. **Copy Required Scripts**:
+   - Before running `select_poly_all.py`, copy `select_poly_all.py`, `update_uv_all.py`, and `update_json.py` to the `BlenderProc/blenderproc/scripts` directory.
+
+4. **Change Directory to BlenderProc Scripts**:
    ```bash
-   python select_poly_all.py
+   cd blenderproc/scripts
+   ```
+
+5. **Run `select_poly_all.py`**:
+   - Update `mesh_dir` to point to the folder with your 3D models and set `destination_folder` to your desired output folder (e.g., `/your_home_path/BlenderProc/blenderproc/scripts/output`).
+   ```bash
+   blenderproc debug select_poly_all.py
    ```
 
 ### Step 4: Additional Dependencies and Pre-Inpaint Processing
@@ -100,46 +109,35 @@ The project pipeline is divided into two main stages:
    python run.py
    ```
 
-4. **Create Folders in ZITS**:
-   - If the `images`, `masks`, and `output` folders do not exist inside the ZITS directory, create them before running the next script.
+### Step 5: Setting Up ZITS Inpainting
 
-### Step 5: Setting Up ZITS Inpainting Environment
+1. **Navigate to the ZITS Inpainting GitHub Page**:
+   - Go to the [ZITS Inpainting GitHub repository](https://github.com/DQiaole/ZITS_inpainting) and follow their installation instructions.
 
-1. **Prepare ZITS Folders**:
-   - Set the following variables in `copy_to_zits.py`:
-     - `source_dir`: Directory where your 3D meshes and masks are located.
-     - `dest_dir_black`: Path to the `masks` folder inside `ZITS_inpainting` (`./ZITS_inpainting/masks`).
-     - `dest_dir_apple`: Path to the `images` folder inside `ZITS_inpainting` (`./ZITS_inpainting/images`).
-
-2. **Run `copy_to_zits.py`**:
-   ```bash
-   python copy_to_zits.py
-   ```
-
-3. **Set Up ZITS Inpainting**:
-   - Open a new terminal.
-   - Navigate to `ZITS_inpainting`:
+2. **Prepare Directories**:
+   - If the `images`, `masks`, and `output` folders do not exist inside the ZITS directory, create them:
      ```bash
-     cd ZITS_inpainting
-     ```
-   - Create and activate a new Conda environment:
-     ```bash
-     conda create -n train_env python=3.6
-     conda activate train_env
-     ```
-   - Install the required packages:
-     ```bash
-     pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
-     pip install -r requirement.txt
-     cd apex
-     pip install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --no-build-isolation ./
+     mkdir -p ZITS_inpainting/images ZITS_inpainting/masks ZITS_inpainting/output
      ```
 
-4. **Run the Inpainting Script**:
-   ```bash
-   python single_image_test_script.py
-   ```
-   The inpainted textures will be saved in the `output` folder inside the `ZITS_inpainting` directory.
+3. **Copy Files to ZITS Directory**:
+   - Use `copy_to_zits.py` to copy the 3D meshes and masks into the appropriate folders inside `ZITS_inpainting`:
+     ```bash
+     python copy_to_zits.py
+     ```
+   - Set the following paths in `copy_to_zits.py`:
+     - `source_dir`: Directory where your 3D meshes and mask files are located.
+     - `dest_dir_black`: Set to `ZITS_inpainting/masks`.
+     - `dest_dir_apple`: Set to `ZITS_inpainting/images`.
+
+4. **Run `single_image_test_script.py`**:
+   - After setting up ZITS and copying the files, run the script:
+     ```bash
+     python single_image_test_script.py
+     ```
+   - The inpainted textures will be saved in the `output` folder inside the `ZITS
+
+Inpainting directory.
 
 5. **Troubleshooting**:
    - If you encounter installation issues with ZITS, refer to their [GitHub page](https://github.com/DQiaole/ZITS_inpainting) for assistance.
@@ -153,25 +151,30 @@ The project pipeline is divided into two main stages:
      - `input_dir_inpainted`: Path to the `output` folder from ZITS_inpainting.
      - `output_dir`: Set this to `/your_home_directory/BlenderProc/blenderproc/scripts/output`.
    ```bash
-   python replace.py
+   blenderproc debug replace.py
    ```
 
 ### Steps 7 & 8: Final UV and JSON Updates
 
-1. **Run `update_json.py`**:
+1. **Navigate to BlenderProc Scripts**:
+   ```bash
+   cd BlenderProc/blenderproc/scripts
+   ```
+
+2. **Run `update_json.py`**:
    - Set the paths:
      - `input_folder = '/your_home_directory/BlenderProc/blenderproc/scripts/output'`
      - `output_folder = '/your_home_directory/BlenderProc/blenderproc/scripts/output_json_updated'`
    ```bash
-   python update_json.py
+   blenderproc debug update_json.py
    ```
 
-2. **Run `update_uv_all.py`**:
-   - Set the following paths in `update_uv_all.py`:
-     - `mesh_dir = '/your_home_directory/blenderProc/BlenderProc/blenderproc/scripts/output'`
-     - `destination_folder = '/your_home_directory/BlenderProc/BlenderProc/blenderproc/scripts/output_json_updated'`
-     - `json_directory = '/your_home_directory/blenderProc/BlenderProc/blenderproc/scripts/output_json_updated'`
+3. **Run `update_uv_all.py`**:
+   - Set the following paths:
+     - `mesh_dir = '/your_home_directory/BlenderProc/blenderproc/scripts/output'`
+     - `destination_folder = '/your_home_directory/BlenderProc/blenderproc/scripts/output_json_updated'`
+     - `json_directory = '/your_home_directory/BlenderProc/blenderproc/scripts/output_json_updated'`
    ```bash
-   python update_uv_all.py
+   blenderproc debug update_uv_all.py
    ```
 
